@@ -1,0 +1,38 @@
+stages:
+  data_ingestion:
+        cmd: python Notebook/src/data_ingestion.py
+        deps:
+          - Notebook/src/data_ingestion.py
+        outs:
+           - data/raw
+  data_preprocessing:
+        cmd: python Notebook/src/data_preprocessing.py
+        deps:
+          - data/raw
+          - Notebook/src/data_preprocessing.py
+        outs:
+            - data/processed
+  feature_engineering:
+        cmd: python Notebook/src/feature_engineering.py
+        deps:
+          - data/processed
+          - Notebook/src/feature_engineering.py
+        outs:
+            - data/features
+  model_building:
+        cmd: python Notebook/src/model_building.py
+        deps:
+          - data/features
+          - Notebook/src/model_building.py
+        outs:
+            - model.pkl
+  model_evaluation:
+        cmd: python Notebook/src/model_evaluation.py  
+        deps:
+          - model.pkl
+          - data/features
+          - Notebook/src/model_evaluation.py
+        outs:
+            - metrics.json
+
+
